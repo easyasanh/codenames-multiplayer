@@ -29,6 +29,13 @@ setInterval(function() {
 }, 1000);
 
 var players = {};
+var playerName;
+
+var blueOperatives = new Set();
+var blueSpymasters = new Set();
+var redOperatives = new Set();
+var redSpymasters = new Set();
+
 io.on('connection', function(socket) {
   socket.on('new player', function() {
     players[socket.id] = {
@@ -51,8 +58,23 @@ io.on('connection', function(socket) {
       player.y += 5;
     }
   });
+
+
+  socket.on('redOperativeName', function(data) {
+    playerName = data;
+    redOperatives.add(playerName)
+    io.sockets.emit('redOperatives', Array.from(redOperatives).join(', '))
+  });
+
+  socket.on('redSpymasterName', function(data) {
+    playerName = data;
+    redSpymasters.add(playerName)
+    io.sockets.emit('redSpymasters', Array.from(redSpymasters).join(', '))
+  });
+
 });
 
 setInterval(function() {
     io.sockets.emit('state', players);
+    io.sockets.emit('blueOperatives')
 }, 1000 / 60);

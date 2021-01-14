@@ -161,7 +161,7 @@
 </head>
 
     <div class="header">
-        <img src="codenames_logo.png">
+        <img src="images/codenames_logo.png">
     </div>
 
 
@@ -179,8 +179,8 @@
             <label for="fname">name:</label><br>
             <input type="text" id="blueName" name="blueName" autocomplete="off"><br>
             <div class="btn-group">
-                <button class="redteam">spymaster</button>
                 <button>operative</button>
+                <button class="redteam">spymaster</button>
             </div>
 
         </div>
@@ -192,12 +192,17 @@
         <div class="column right">
             <h2>Red Team [SCORE]</h2>
             <h5></h5>
-            <p>[PLAYER NAME]</p>
+
+            <h3>OPERATIVES</h3>
+            <p id="redOperativeName"> </p>
+            <h3>SPYMASTERS</h3>
+            <p id="redSpymasterName"> </p>
+
             <label for="fname">name:</label><br>
             <input type="text" id="redName" name="redName" autocomplete="off"><br>
             <div class="btn-group">
-                <button>spymaster</button>
-                <button>operative</button>
+                <button id="redOperativeButton" onclick="clickRedOperative()">operative</button>
+                <button id="redSpymasterButton" onclick="clickRedSpymaster()">spymaster</button>
             </div>
         </div>
 
