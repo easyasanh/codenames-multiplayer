@@ -101,11 +101,11 @@ var redOperatives = new Set();
 var redSpymasters = new Set();
 
 var canvas = document.getElementById('canvas');
-canvas.width = 800;
-canvas.height = 600;
+canvas.width = 1080;
+canvas.height = 650;
 var context = canvas.getContext('2d');
 socket.on('state', function(players) {
-  context.clearRect(0, 0, 800, 600);
+  context.clearRect(0, 0, 1080, 650);
   context.fillStyle = 'green';
   for (var id in players) {
     var player = players[id];
