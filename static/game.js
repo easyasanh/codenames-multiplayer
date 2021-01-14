@@ -3,37 +3,14 @@ socket.on('message', function(data) {
   console.log(data);
 });
 
-
-// function clickSpymasterName() {
-//   console.log("Clicked name")
-//   var userName = 'this is a name';
-//   socket.emit('spymasterName', userName);
-
-//   socket.on('spymasterName', function(playerName) {
-//     var redName = document.getElementById('redName').value;
-//     document.getElementById("redSpymasterName").textContent = redName;
-//     redSpymasterName.setAttribute('value', playerName);
-
-//     redSpymasters.add(redName)
-//   });
-// }
-
-// function clickOperativeName() {
-//   console.log("Clicked name")
-//   var userName = 'this is a name';
-//   socket.emit('operativeName', userName);
-
-//   socket.on('operativeName', function(playerName) {
-//     var redName = document.getElementById('redName').value;
-//     document.getElementById("redOperativeName").textContent = redName;
-//     redOperativeName.setAttribute('value', playerName);
-
-//     redOperatives.add(redName)
-
-//   });
-// }
-
-
+function createCards(context) {
+  for (i = 50; i < 1050; i+=200) {
+    for (j = 0; j < 650; j+=130) {    
+        context.fillStyle = "#C2C1C2";
+        context.fillRect(i, j, 190, 120);
+    }
+  }
+}
 
 // User joining game
 
@@ -93,8 +70,6 @@ socket.emit('new player');
 setInterval(function() {
   socket.emit('movement', movement);
   
-  document.getElementById("redSpymasterName").textContent = redSpymasters;
-  document.getElementById("redOperativeName").textContent = redOperatives;
 }, 1000 / 60);
 
 var redOperatives = new Set();
@@ -104,8 +79,18 @@ var canvas = document.getElementById('canvas');
 canvas.width = 1080;
 canvas.height = 650;
 var context = canvas.getContext('2d');
+
+
+
 socket.on('state', function(players) {
+
+  // make card outline
   context.clearRect(0, 0, 1080, 650);
+  createCards(context);
+  context.fillStyle = "#a8201a"
+  context.fillText("Word", 100,100)
+  context.font = "15px Calisto"
+  context.textAlign = "center";
   context.fillStyle = 'green';
   for (var id in players) {
     var player = players[id];
@@ -120,11 +105,15 @@ socket.on('state', function(players) {
   socket.on('redOperatives', function(operatives) {
     redOperatives = operatives;
     console.log(redOperatives)
+    document.getElementById("redSpymasterName").textContent = redSpymasters;
+    document.getElementById("redOperativeName").textContent = redOperatives;
   });
 
   socket.on('redSpymasters', function(spymasters) {
     redSpymasters = spymasters;
     console.log(redSpymasters)
+    document.getElementById("redSpymasterName").textContent = redSpymasters;
+    document.getElementById("redOperativeName").textContent = redOperatives;
   });
   
   
