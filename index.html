@@ -69,7 +69,7 @@
         canvas {
         width: 1080px;
         height: 650px;
-      }
+        }
 
         /* Footer */
         .footer {
@@ -77,6 +77,12 @@
             text-align: center;
             background: #ddd;
             margin-bottom: 0;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 100px;
+            width: 100%;
+            overflow: hidden;
         }
 
         /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
@@ -108,7 +114,7 @@
             float: left;
             /* Float the buttons side by side */
             font-family: Verdana;
-            transition-duration: 0.6s;
+            transition-duration: 0.3s;
         }
 
         .btn-group button:not(:last-child) {
@@ -130,7 +136,7 @@
 
         .column {
             float: left;
-            width: 33.33%;
+            width: 370px;
             padding: 10px;
         }
 
@@ -141,6 +147,8 @@
 
         .middle {
             width: 60%;
+            height: 650px;
+            background-color: #ddd;
         }
 
         input[type=text] {
@@ -156,6 +164,36 @@
         input[type=text]:focus {
             border: 3px solid #555;
         }
+
+        button {
+            background-color: #a8201a;
+            height: 110px;
+            width: 180px;
+            padding: 10px 24px;
+            font-family: Verdana;
+            transition-duration: 0.4s;
+        }
+
+        button:hover {
+            background-color: aqua;
+        }
+
+        .row-divider {
+            height: 10px;
+        }
+
+        .main {
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+
+        .cards {
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+
     </style>
 </head>
 
@@ -172,7 +210,7 @@
 
     <div class="row">
         <div class="column left">
-            <h2>Blue Team [SCORE]</h2>
+            <h2>Blue Team [9]</h2>
             <h5></h5>
             <p>[PLAYER NAME]</p>
             <label for="fname">name:</label><br>
@@ -183,13 +221,46 @@
             </div>
 
         </div>
-        <div class="column middle">
+        <div class="column middle" width="1000" height="650">
             <div class="main">
-                <canvas id="canvas" width="1080" height="650"></canvas>
+                <!-- <canvas id="canvas" width="1080" height="650"></canvas> -->
+                <div class="cards" >
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <div class="row-divider"></div>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <div class="row-divider"></div>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <div class="row-divider"></div>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <div class="row-divider"></div>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <button>EEEEEE</button>
+                    <div class="row-divider"></div>
+                </div>
             </div>
         </div>
+            
         <div class="column right">
-            <h2>Red Team [SCORE]</h2>
+            <h2>Red Team [8]</h2>
             <h5></h5>
 
             <h3>OPERATIVES</h3>

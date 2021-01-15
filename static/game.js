@@ -27,6 +27,22 @@ function clickRedSpymaster() {  // red spymaster
   socket.emit('redSpymasterName', userName);
 }
 
+function printMousePos(e){
+
+  cursorX = e.pageX;
+  cursorY= e.pageY;
+  console.log( "pageX: " + cursorX +",pageY: " + cursorY );
+  console.log(getRowNumber(cursorY))
+}
+
+function getRowNumber(y) {
+  if (y > 136 && y < 256) return 0; // row 1
+  if (y > 266 && y < 386) return 1; // row 2
+  if (y > 396 && y < 516) return 2; // row 3
+  if (y > 526 && y < 646) return 3; // row 4
+  if (y > 656 && y < 776) return 4; // row 5
+}
+
 var movement = {
     up: false,
     down: false,
@@ -80,6 +96,7 @@ canvas.width = 1080;
 canvas.height = 650;
 var context = canvas.getContext('2d');
 
+document.addEventListener('click', printMousePos, true);
 
 
 socket.on('state', function(players) {
@@ -98,8 +115,6 @@ socket.on('state', function(players) {
     context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
     context.fill();
   }
-
-  //names
   
   //document.getElementById("redSpymasterName").textContent = Array.from(redSpymasters).join(', ');
   socket.on('redOperatives', function(operatives) {
@@ -119,3 +134,5 @@ socket.on('state', function(players) {
   
 
 });
+
+
