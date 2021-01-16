@@ -28,7 +28,6 @@ io.on('connection', function(socket) {
 var cards = generateCardColours();
 
 setInterval(function() {
-    io.sockets.emit('message', 'hi!');
     io.sockets.emit('words', getWords());
     io.sockets.emit('cards', cards);
 }, 1000);

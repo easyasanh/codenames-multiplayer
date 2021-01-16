@@ -2,11 +2,6 @@ var socket = io();
 
 var role = 0; // role 0 for operative, role 1 for spymaster
 
-
-socket.on('message', function(data) {
-  console.log(data);
-});
-
 function showRules() {
   var popup = document.getElementById("myPopup");
   popup.classList.toggle("show");
@@ -181,7 +176,8 @@ function addWords(words) {
   document.getElementById('button22').textContent = words[22];
   document.getElementById('button23').textContent = words[23];
   document.getElementById('button24').textContent = words[24];
-
 }
+
+
 
 

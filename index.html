@@ -213,10 +213,11 @@
 
     <div class="row">
         <div class="column left">
-            <h2>Red Team [8]</h2>
-            <h3>OPERATIVES</h3>
+            <div id="redScore" style="font-size: 30px;">8</div>
+            <h2>Red Team</h2>
+            <h5>OPERATIVES</h5>
             <p id="redOperativeName"> </p>
-            <h3>SPYMASTERS</h3>
+            <h5>SPYMASTERS</h5>
             <p id="redSpymasterName"> </p>
             <label for="fname">name:</label><br>
             <input type="text" id="redName" name="redName" autocomplete="off"><br>
@@ -229,41 +230,42 @@
         <div class="column middle" width="1000" height="650">
                 <!-- <canvas id="canvas" width="1080" height="650"></canvas> -->
                 <div class="cards">
-                    <button id="button0"></button>
-                    <button id="button1"></button>
-                    <button id="button2"></button>
-                    <button id="button3"></button>
-                    <button id="button4"></button>
+                    <button id="button0" onclick="clickButton0()"></button>
+                    <button id="button1" onclick="clickButton1()"></button>
+                    <button id="button2" onclick="clickButton2()"></button>
+                    <button id="button3" onclick="clickButton3()"></button>
+                    <button id="button4" onclick="clickButton4()"></button>
                     <div class="row-divider"></div>
-                    <button id="button5"></button>
-                    <button id="button6"></button>
-                    <button id="button7"></button>
-                    <button id="button8"></button>
-                    <button id="button9"></button>
+                    <button id="button5" onclick="clickButton5()"></button>
+                    <button id="button6" onclick="clickButton6()"></button>
+                    <button id="button7" onclick="clickButton7()"></button>
+                    <button id="button8" onclick="clickButton8()"></button>
+                    <button id="button9" onclick="clickButton9()"></button>
                     <div class="row-divider"></div>
-                    <button id="button10"></button>
-                    <button id="button11"></button>
-                    <button id="button12"></button>
-                    <button id="button13"></button>
-                    <button id="button14"></button>
+                    <button id="button10" onclick="clickButton10()"></button>
+                    <button id="button11" onclick="clickButton11()"></button>
+                    <button id="button12" onclick="clickButton12()"></button>
+                    <button id="button13" onclick="clickButton13()"></button>
+                    <button id="button14" onclick="clickButton14()"></button>
                     <div class="row-divider"></div>
-                    <button id="button15"></button>
-                    <button id="button16"></button>
-                    <button id="button17"></button>
-                    <button id="button18"></button>
-                    <button id="button19"></button>
+                    <button id="button15" onclick="clickButton15()"></button>
+                    <button id="button16" onclick="clickButton16()"></button>
+                    <button id="button17" onclick="clickButton17()"></button>
+                    <button id="button18" onclick="clickButton18()"></button>
+                    <button id="button19" onclick="clickButton19()"></button>
                     <div class="row-divider"></div>
-                    <button id="button20"></button>
-                    <button id="button21"></button>
-                    <button id="button22"></button>
-                    <button id="button23"></button>
-                    <button id="button24"></button>
+                    <button id="button20" onclick="clickButton20()"></button>
+                    <button id="button21" onclick="clickButton21()"></button>
+                    <button id="button22" onclick="clickButton22()"></button>
+                    <button id="button23" onclick="clickButton23()"></button>
+                    <button id="button24" onclick="clickButton24()"></button>
                     <div class="row-divider"></div>
                 </div>
         </div>
             
         <div class="column right">
-            <h2>Blue Team [9]</h2>
+            <div id="blueScore" style="font-size: 30px;">9</div>
+            <h2>Blue Team</h2>
             <h5></h5>
 
             <h3>OPERATIVES</h3>
@@ -285,6 +287,7 @@
 </body>
 
 <script src="/static/game.js"></script>
+<script src="/static/buttonhandlers.js"></script>
 
 <div class="footer">
     <div class="popup" onclick="showRules()">How to play:
