@@ -93,7 +93,7 @@ var movement = {
 socket.emit('new player');
 setInterval(function() {
   socket.emit('movement', movement);
-  
+
 }, 1000 / 60);
 
 var redOperatives = new Set();
@@ -106,6 +106,17 @@ var redSpymasters = new Set();
 
 document.addEventListener('click', printMousePos, true);
 
+socket.on('redOperatives', function(operatives) {
+  redOperatives = operatives;
+  console.log(redOperatives)
+});
+
+socket.on('redSpymasters', function(spymasters) {
+  redSpymasters = spymasters;
+  console.log(redSpymasters)
+  document.getElementById("redSpymasterName").textContent = redSpymasters;
+  document.getElementById("redOperativeName").textContent = redOperatives;
+});
 
 socket.on('state', function(players) {
 
@@ -124,27 +135,20 @@ socket.on('state', function(players) {
   //   context.fill();
   // }
 
+  if (redSpymasters.size > 0) {
+    document.getElementById("redSpymasterName").textContent = redSpymasters;
+  }
+  if (redOperatives.size > 0) {
+    document.getElementById("redOperativeName").textContent = redOperatives;
+  }
+
   socket.on('words', function(words) {
     addWords(words)
   });
 
   //document.getElementById("redSpymasterName").textContent = Array.from(redSpymasters).join(', ');
-  socket.on('redOperatives', function(operatives) {
-    redOperatives = operatives;
-    console.log(redOperatives)
-    document.getElementById("redSpymasterName").textContent = redSpymasters;
-    document.getElementById("redOperativeName").textContent = redOperatives;
-  });
 
-  socket.on('redSpymasters', function(spymasters) {
-    redSpymasters = spymasters;
-    console.log(redSpymasters)
-    document.getElementById("redSpymasterName").textContent = redSpymasters;
-    document.getElementById("redOperativeName").textContent = redOperatives;
-  });
   
-  
-
 });
 
 function addWords(words) {

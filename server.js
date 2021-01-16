@@ -78,13 +78,11 @@ io.on('connection', function(socket) {
   socket.on('redOperativeName', function(data) {
     playerName = data;
     redOperatives.add(playerName);
-    io.sockets.emit('redOperatives', Array.from(redOperatives).join(', '));
   });
 
   socket.on('redSpymasterName', function(data) {
     playerName = data;
     redSpymasters.add(playerName);
-    io.sockets.emit('redSpymasters', Array.from(redSpymasters).join(', '));
   });
 
 });
@@ -92,4 +90,7 @@ io.on('connection', function(socket) {
 setInterval(function() {
     io.sockets.emit('state', players);
     io.sockets.emit('blueOperatives');
+    
+    io.sockets.emit('redOperatives', Array.from(redOperatives).join(', '));
+    io.sockets.emit('redSpymasters', Array.from(redSpymasters).join(', '));
 }, 1000 / 60);
