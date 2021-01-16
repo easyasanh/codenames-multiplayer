@@ -6,6 +6,7 @@ var socketIO = require('socket.io');
 var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
+app.use(express.static('public'))
 
 app.set('port', 5000);
 app.use('/static', express.static(__dirname + '/static'));
@@ -26,6 +27,7 @@ io.on('connection', function(socket) {
 
 setInterval(function() {
     io.sockets.emit('message', 'hi!');
+    io.sockets.emit('words', getWords());
 }, 1000);
 
 var players = {};
@@ -35,6 +37,18 @@ var blueOperatives = new Set();
 var blueSpymasters = new Set();
 var redOperatives = new Set();
 var redSpymasters = new Set();
+
+// add words
+
+function getWords() {
+  const fs = require('fs');
+
+  let txtFile = "used_words/words.csv";
+  let str = fs.readFileSync(txtFile,'utf8');
+  var words = str.split(",");
+  return words
+}
+
 
 io.on('connection', function(socket) {
   socket.on('new player', function() {
@@ -59,22 +73,23 @@ io.on('connection', function(socket) {
     }
   });
 
+  
 
   socket.on('redOperativeName', function(data) {
     playerName = data;
-    redOperatives.add(playerName)
-    io.sockets.emit('redOperatives', Array.from(redOperatives).join(', '))
+    redOperatives.add(playerName);
+    io.sockets.emit('redOperatives', Array.from(redOperatives).join(', '));
   });
 
   socket.on('redSpymasterName', function(data) {
     playerName = data;
-    redSpymasters.add(playerName)
-    io.sockets.emit('redSpymasters', Array.from(redSpymasters).join(', '))
+    redSpymasters.add(playerName);
+    io.sockets.emit('redSpymasters', Array.from(redSpymasters).join(', '));
   });
 
 });
 
 setInterval(function() {
     io.sockets.emit('state', players);
-    io.sockets.emit('blueOperatives')
+    io.sockets.emit('blueOperatives');
 }, 1000 / 60);

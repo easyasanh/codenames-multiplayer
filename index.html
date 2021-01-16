@@ -148,7 +148,6 @@
         .middle {
             width: 60%;
             height: 650px;
-            background-color: #ddd;
         }
 
         input[type=text] {
@@ -166,16 +165,19 @@
         }
 
         button {
-            background-color: #a8201a;
+            background-color: #333;
             height: 110px;
             width: 180px;
             padding: 10px 24px;
             font-family: Verdana;
-            transition-duration: 0.4s;
+            color: #ddd;
+            transition-duration: 0.6s;
+            
+            width: 19%
         }
 
         button:hover {
-            background-color: aqua;
+            background-color: black;
         }
 
         .row-divider {
@@ -191,14 +193,15 @@
         .cards {
             margin-left: auto;
             margin-right: auto;
-
+            margin: auto;
+            display:block;
         }
 
     </style>
 </head>
 
     <div class="header">
-        <img src="images/codenames_logo.png">
+        <img src="static/images/codenames_logo.png" id="codenames_logo">
     </div>
 
 
@@ -210,57 +213,57 @@
 
     <div class="row">
         <div class="column left">
-            <h2>Blue Team [9]</h2>
-            <h5></h5>
-            <p>[PLAYER NAME]</p>
+            <h2>Red Team [8]</h2>
+            <h3>OPERATIVES</h3>
+            <p id="redOperativeName"> </p>
+            <h3>SPYMASTERS</h3>
+            <p id="redSpymasterName"> </p>
             <label for="fname">name:</label><br>
-            <input type="text" id="blueName" name="blueName" autocomplete="off"><br>
+            <input type="text" id="redName" name="redName" autocomplete="off"><br>
             <div class="btn-group">
-                <button>operative</button>
-                <button class="redteam">spymaster</button>
+                <button id="redOperativeButton" onclick="clickRedOperative()">operative</button>
+                <button id="redSpymasterButton" onclick="clickRedSpymaster()">spymaster</button>
             </div>
 
         </div>
         <div class="column middle" width="1000" height="650">
-            <div class="main">
                 <!-- <canvas id="canvas" width="1080" height="650"></canvas> -->
-                <div class="cards" >
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
+                <div class="cards">
+                    <button id="button0"></button>
+                    <button id="button1"></button>
+                    <button id="button2"></button>
+                    <button id="button3"></button>
+                    <button id="button4"></button>
                     <div class="row-divider"></div>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
+                    <button id="button5"></button>
+                    <button id="button6"></button>
+                    <button id="button7"></button>
+                    <button id="button8"></button>
+                    <button id="button9"></button>
                     <div class="row-divider"></div>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
+                    <button id="button10"></button>
+                    <button id="button11"></button>
+                    <button id="button12"></button>
+                    <button id="button13"></button>
+                    <button id="button14"></button>
                     <div class="row-divider"></div>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
+                    <button id="button15"></button>
+                    <button id="button16"></button>
+                    <button id="button17"></button>
+                    <button id="button18"></button>
+                    <button id="button19"></button>
                     <div class="row-divider"></div>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
-                    <button>EEEEEE</button>
+                    <button id="button20"></button>
+                    <button id="button21"></button>
+                    <button id="button22"></button>
+                    <button id="button23"></button>
+                    <button id="button24"></button>
                     <div class="row-divider"></div>
                 </div>
-            </div>
         </div>
             
         <div class="column right">
-            <h2>Red Team [8]</h2>
+            <h2>Blue Team [9]</h2>
             <h5></h5>
 
             <h3>OPERATIVES</h3>
@@ -269,7 +272,7 @@
             <p id="redSpymasterName"> </p>
 
             <label for="fname">name:</label><br>
-            <input type="text" id="redName" name="redName" autocomplete="off"><br>
+            <input type="text" id="blueName" name="blueName" autocomplete="off"><br>
             <div class="btn-group">
                 <button id="redOperativeButton" onclick="clickRedOperative()">operative</button>
                 <button id="redSpymasterButton" onclick="clickRedSpymaster()">spymaster</button>
@@ -282,8 +285,13 @@
 </body>
 
 <script src="/static/game.js"></script>
+
 <div class="footer">
-    <h2>For legal reasons this was made by Chang</h2>
+    <div class="popup" onclick="showRules()">How to play:
+        <span class="popuptext" id="myPopup">Two teams compete by each having a "spymaster" give one-word clues that can point to multiple words on the board. The other players on the team attempt to guess their team's words while avoiding the words of the other team.</span>
+      </div>
+    
+
 </div>
 
 </html>
