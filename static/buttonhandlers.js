@@ -7,11 +7,33 @@ socket.on('cards', function(cardColours) {
     cards = cardColours;
 });
 
-function handleCardClick(cardNumber) {
-    if (cardNumber == 0) redScore--;
-    if (cardNumber == 1) blueScore--;
+socket.on('redScore', function(score) {
+    redScore = score;
     document.getElementById("redScore").textContent = redScore;
+});
+
+socket.on('blueScore', function(score) {
+    blueScore = score;
     document.getElementById("blueScore").textContent = blueScore;
+});
+
+function handleCardClick(cardNumber) {
+    if (cards[cardNumber] == 0) redScore--;
+    if (cards[cardNumber] == 1) blueScore--;
+    if (cards[cardNumber] == 3) {
+        console.log("GAME OVER, YOU CHOSE THE BLACK CARD!");
+    }
+
+    socket.emit('redScore', redScore);
+    socket.emit('blueScore', blueScore);
+
+    // game over
+    if (redScore == 0) {
+        console.log("GAME OVER, RED WINS!");
+    }
+    else if (blueScore == 0) {
+        console.log("GAME OVER, BLUE WINS!");
+    }
 }
 
 function clickButton0() {

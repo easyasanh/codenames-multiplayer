@@ -40,6 +40,10 @@ var redSpymasters = new Set();
 var blueOperatives = new Set();
 var blueSpymasters = new Set();
 
+
+var redScore = 8;
+var blueScore = 9;
+
 // add words
 
 function getWords() {
@@ -104,15 +108,25 @@ io.on('connection', function(socket) {
     blueSpymasters.add(playerName);
   });
 
+  socket.on('redScore', function(data) {
+    redScore = data;
+  });
+
+  socket.on('blueScore', function(data) {
+    blueScore = data;
+  });
+
 
 });
 
 setInterval(function() {
     io.sockets.emit('state', players);
-    
 
     io.sockets.emit('redOperatives', Array.from(redOperatives).join(', '));
     io.sockets.emit('redSpymasters', Array.from(redSpymasters).join(', '));
     io.sockets.emit('blueOperatives', Array.from(blueOperatives).join(', '));
     io.sockets.emit('blueSpymasters', Array.from(blueSpymasters).join(', '));
+
+    io.sockets.emit('redScore', redScore);
+    io.sockets.emit('blueScore', blueScore);
 }, 1000 / 60);
