@@ -33,10 +33,10 @@ setInterval(function() {
 var players = {};
 var playerName;
 
-var blueOperatives = new Set();
-var blueSpymasters = new Set();
 var redOperatives = new Set();
 var redSpymasters = new Set();
+var blueOperatives = new Set();
+var blueSpymasters = new Set();
 
 // add words
 
@@ -85,12 +85,24 @@ io.on('connection', function(socket) {
     redSpymasters.add(playerName);
   });
 
+  socket.on('blueOperativeName', function(data) {
+    playerName = data;
+    blueOperatives.add(playerName);
+  });
+
+  socket.on('blueSpymasterName', function(data) {
+    playerName = data;
+    blueSpymasters.add(playerName);
+  });
+
+
 });
 
 setInterval(function() {
     io.sockets.emit('state', players);
-    io.sockets.emit('blueOperatives');
     
     io.sockets.emit('redOperatives', Array.from(redOperatives).join(', '));
     io.sockets.emit('redSpymasters', Array.from(redSpymasters).join(', '));
+    io.sockets.emit('blueOperatives', Array.from(blueOperatives).join(', '));
+    io.sockets.emit('blueSpymasters', Array.from(blueSpymasters).join(', '));
 }, 1000 / 60);

@@ -1,5 +1,6 @@
 var socket = io();
 
+var role = 0; // role 0 for operative, role 1 for spymaster
 
 
 socket.on('message', function(data) {
@@ -31,24 +32,26 @@ function clickRedOperative() {  // red operative
 }
 
 function clickRedSpymaster() {  // red spymaster
+  role = 1;
   var userName = document.getElementById('redName').value;
   socket.emit('redSpymasterName', userName);
 }
 
-function printMousePos(e){
+// Blue team
 
-  cursorX = e.pageX;
-  cursorY= e.pageY;
-  console.log( "pageX: " + cursorX +",pageY: " + cursorY );
-  console.log(getRowNumber(cursorY))
+function clickBlueOperative() {  // red operative
+  var userName = document.getElementById('blueName').value;
+  socket.emit('blueOperativeName', userName);
 }
 
-function getRowNumber(y) {
-  if (y > 136 && y < 256) return 0; // row 1
-  if (y > 266 && y < 386) return 1; // row 2
-  if (y > 396 && y < 516) return 2; // row 3
-  if (y > 526 && y < 646) return 3; // row 4
-  if (y > 656 && y < 776) return 4; // row 5
+function clickBlueSpymaster() {  // red spymaster
+  role = 1;
+  var userName = document.getElementById('blueName').value;
+  socket.emit('blueSpymasterName', userName);
+}
+
+function setButtonColours() {
+  if (role = 1) document.getElementById("button7").style.background = "#A8201A"
 }
 
 var movement = {
@@ -96,58 +99,58 @@ setInterval(function() {
 
 }, 1000 / 60);
 
+
+setButtonColours();
+
 var redOperatives = new Set();
 var redSpymasters = new Set();
+var blueOperatives = new Set();
+var blueSpymasters = new Set();
 
 // var canvas = document.getElementById('canvas');
 // canvas.width = 1080;
 // canvas.height = 650;
 //var context = canvas.getContext('2d');
 
-document.addEventListener('click', printMousePos, true);
 
 socket.on('redOperatives', function(operatives) {
   redOperatives = operatives;
-  console.log(redOperatives)
+  document.getElementById("redOperativeName").textContent = redOperatives;
 });
 
 socket.on('redSpymasters', function(spymasters) {
   redSpymasters = spymasters;
-  console.log(redSpymasters)
   document.getElementById("redSpymasterName").textContent = redSpymasters;
-  document.getElementById("redOperativeName").textContent = redOperatives;
 });
 
+socket.on('blueOperatives', function(operatives) {
+  blueOperatives = operatives;
+  document.getElementById("blueOperativeName").textContent = blueOperatives;
+});
+
+socket.on('blueSpymasters', function(spymasters) {
+  blueSpymasters = spymasters;
+  document.getElementById("blueSpymasterName").textContent = blueSpymasters;
+});
+
+if (redSpymasters.size > 0) {
+  document.getElementById("redSpymasterName").textContent = redSpymasters;
+}
+if (redOperatives.size > 0) {
+  document.getElementById("redOperativeName").textContent = redOperatives;
+}
+
+if (blueSpymasters.size > 0) {
+  document.getElementById("blueSpymasterName").textContent = blueSpymasters;
+}
+if (blueOperatives.size > 0) {
+  document.getElementById("blueOperativeName").textContent = blueOperatives;
+}
+
 socket.on('state', function(players) {
-
-  // make card outline
-  // context.clearRect(0, 0, 1080, 650);
-  // createCards(context);
-  // context.fillStyle = "#a8201a"
-  // context.fillText("Word", 100,100)
-  // context.font = "15px Calisto"
-  // context.textAlign = "center";
-  // context.fillStyle = 'green';
-  // for (var id in players) {
-  //   var player = players[id];
-  //   context.beginPath();
-  //   context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-  //   context.fill();
-  // }
-
-  if (redSpymasters.size > 0) {
-    document.getElementById("redSpymasterName").textContent = redSpymasters;
-  }
-  if (redOperatives.size > 0) {
-    document.getElementById("redOperativeName").textContent = redOperatives;
-  }
-
   socket.on('words', function(words) {
     addWords(words)
   });
-
-  //document.getElementById("redSpymasterName").textContent = Array.from(redSpymasters).join(', ');
-
   
 });
 
@@ -177,6 +180,7 @@ function addWords(words) {
   document.getElementById('button22').textContent = words[22];
   document.getElementById('button23').textContent = words[23];
   document.getElementById('button24').textContent = words[24];
+
 }
 
 
