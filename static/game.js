@@ -27,6 +27,7 @@ function createCards(context) {
 // Red team
 
 function clickRedOperative() {  // red operative
+  role = 0;
   var userName = document.getElementById('redName').value;
   socket.emit('redOperativeName', userName);
 }
@@ -40,6 +41,7 @@ function clickRedSpymaster() {  // red spymaster
 // Blue team
 
 function clickBlueOperative() {  // red operative
+  role = 0;
   var userName = document.getElementById('blueName').value;
   socket.emit('blueOperativeName', userName);
 }
@@ -57,7 +59,7 @@ function setButtonColours() {
   }
 }
 
-setButtonColours();
+setCardColours();
 
 var redOperatives = new Set();
 var redSpymasters = new Set();
@@ -108,8 +110,50 @@ socket.on('state', function(players) {
   socket.on('words', function(words) {
     addWords(words)
   });
+
+  socket.on('cards', function(cards) {
+    setCardColours(cards);
+  });
   
 });
+
+function getCardColour(type) {
+  if (type == 0) return "#A8201A";  // red
+  if (type == 1) return "#357DED";  // blue
+  if (type == 2) return "#555";  // neutral
+  if (type == 3) return "#23231A";  // black
+}
+
+function setCardColours(cards) {
+  if (cards != null) {
+    document.getElementById('button0').style.background = getCardColour(cards[0]);
+    document.getElementById('button1').style.background = getCardColour(cards[1]);
+    document.getElementById('button2').style.background = getCardColour(cards[2]);
+    document.getElementById('button3').style.background = getCardColour(cards[3]);
+    document.getElementById('button4').style.background = getCardColour(cards[4]);
+    document.getElementById('button5').style.background = getCardColour(cards[5]);
+    document.getElementById('button6').style.background = getCardColour(cards[6]);
+    document.getElementById('button7').style.background = getCardColour(cards[7]);
+    document.getElementById('button8').style.background = getCardColour(cards[8]);
+    document.getElementById('button9').style.background = getCardColour(cards[9]);
+    document.getElementById('button10').style.background = getCardColour(cards[10]);
+    document.getElementById('button11').style.background = getCardColour(cards[11]);
+    document.getElementById('button12').style.background = getCardColour(cards[12]);
+    document.getElementById('button13').style.background = getCardColour(cards[13]);
+    document.getElementById('button14').style.background = getCardColour(cards[14]);
+    document.getElementById('button15').style.background = getCardColour(cards[15]);
+    document.getElementById('button16').style.background = getCardColour(cards[16]);
+    document.getElementById('button17').style.background = getCardColour(cards[17]);
+    document.getElementById('button18').style.background = getCardColour(cards[18]);
+    document.getElementById('button19').style.background = getCardColour(cards[19]);
+    document.getElementById('button20').style.background = getCardColour(cards[20]);
+    document.getElementById('button21').style.background = getCardColour(cards[21]);
+    document.getElementById('button22').style.background = getCardColour(cards[22]);
+    document.getElementById('button23').style.background = getCardColour(cards[23]);
+    document.getElementById('button24').style.background = getCardColour(cards[24]);
+  }
+}
+
 
 function addWords(words) {
   document.getElementById('button0').textContent = words[0];

@@ -25,9 +25,12 @@ server.listen(5000, function() {
 io.on('connection', function(socket) {
 });
 
+var cards = generateCardColours();
+
 setInterval(function() {
     io.sockets.emit('message', 'hi!');
     io.sockets.emit('words', getWords());
+    io.sockets.emit('cards', cards);
 }, 1000);
 
 var players = {};
@@ -49,8 +52,39 @@ function getWords() {
   return words
 }
 
+function generateCardColours() {
+  var cards = [0, 0, 0, 0, 0, 0, 0, 0,  // red
+    1, 1, 1, 1, 1, 1, 1, 1, 1,  // blue
+    2, 2, 2, 2, 2, 2, 2,  // neutral
+    3]; // black
+  return shuffle(cards);
+}
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+
+
+
 
 io.on('connection', function(socket) {
+
   socket.on('redOperativeName', function(data) {
     playerName = data;
     redOperatives.add(playerName);
@@ -77,6 +111,7 @@ io.on('connection', function(socket) {
 setInterval(function() {
     io.sockets.emit('state', players);
     
+
     io.sockets.emit('redOperatives', Array.from(redOperatives).join(', '));
     io.sockets.emit('redSpymasters', Array.from(redSpymasters).join(', '));
     io.sockets.emit('blueOperatives', Array.from(blueOperatives).join(', '));
