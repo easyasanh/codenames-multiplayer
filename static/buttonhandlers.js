@@ -143,4 +143,3 @@ function clickButton24() {
     console.log("clicked button 24")
     handleCardClick(24);
 }
-
