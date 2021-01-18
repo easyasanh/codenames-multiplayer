@@ -84,7 +84,7 @@ function shuffle(array) {
 
 
 
-
+var guessedCards = [];
 
 io.on('connection', function(socket) {
 
@@ -116,6 +116,10 @@ io.on('connection', function(socket) {
     blueScore = data;
   });
 
+  socket.on('guessedCards', function(data) {
+    guessedCards = data;
+  });
+
 
 });
 
@@ -129,4 +133,6 @@ setInterval(function() {
 
     io.sockets.emit('redScore', redScore);
     io.sockets.emit('blueScore', blueScore);
+    
+    io.sockets.emit('guessedCards', guessedCards);
 }, 1000 / 60);
