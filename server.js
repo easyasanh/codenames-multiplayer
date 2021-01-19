@@ -44,6 +44,9 @@ var blueSpymasters = new Set();
 var redScore = 8;
 var blueScore = 9;
 
+
+var guessedCards = [];
+
 // add words
 
 function getWords() {
@@ -84,7 +87,6 @@ function shuffle(array) {
 
 
 
-var guessedCards = [];
 
 io.on('connection', function(socket) {
 
@@ -116,7 +118,7 @@ io.on('connection', function(socket) {
     blueScore = data;
   });
 
-  socket.on('guessedCards', function(data) {
+  socket.on('newGuessedCards', function(data) {
     guessedCards = data;
   });
 

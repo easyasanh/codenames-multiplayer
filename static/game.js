@@ -1,6 +1,8 @@
 var socket = io();
 
 var role = 0; // role 0 for operative, role 1 for spymaster
+var team;
+var teamTurn = "blueSpymaster"; // blueSpymaster -> blueOperative -> redSpymaster -> redOperative
 
 // card elements
 var button0 = document.getElementById('button0');
@@ -56,12 +58,14 @@ function createCards(context) {
 
 function clickRedOperative() {  // red operative
   role = 0;
+  team = "red";
   var userName = document.getElementById('redName').value;
   socket.emit('redOperativeName', userName);
 }
 
 function clickRedSpymaster() {  // red spymaster
   role = 1;
+  team = "red";
   var userName = document.getElementById('redName').value;
   socket.emit('redSpymasterName', userName);
 }
@@ -70,12 +74,14 @@ function clickRedSpymaster() {  // red spymaster
 
 function clickBlueOperative() {  // red operative
   role = 0;
+  team = "blue"
   var userName = document.getElementById('blueName').value;
   socket.emit('blueOperativeName', userName);
 }
 
 function clickBlueSpymaster() {  // red spymaster
   role = 1;
+  team = "blue";
   var userName = document.getElementById('blueName').value;
   socket.emit('blueSpymasterName', userName);
 }
@@ -100,6 +106,8 @@ var blueSpymasters = new Set();
 //var context = canvas.getContext('2d');
 
 
+var guessedCards = [];
+
 socket.on('redOperatives', function(operatives) {
   redOperatives = operatives;
   document.getElementById("redOperativeName").textContent = redOperatives;
@@ -120,6 +128,12 @@ socket.on('blueSpymasters', function(spymasters) {
   document.getElementById("blueSpymasterName").textContent = blueSpymasters;
 });
 
+socket.on('guessedCards', function(data) {
+  guessedCards = data;
+  //console.log(guessedCards);
+  colourGuessedCards();
+});
+
 if (redSpymasters.size > 0) {
   document.getElementById("redSpymasterName").textContent = redSpymasters;
 }
@@ -136,7 +150,6 @@ if (blueOperatives.size > 0) {
 
 
 
-var guessedCards = [];
 for (i = 0; i < 25; i++) {
   guessedCards[i] = false;
 }
@@ -150,9 +163,7 @@ socket.on('state', function(players) {
     setCardColours(cards);
   });
 
-  socket.on('guessedCards', function(data) {
-    guessedCards = data;
-  });
+
   
 });
 
@@ -183,6 +194,8 @@ var cards;
 var redScore = 8;
 var blueScore = 9;
 
+
+
 socket.on('cards', function(cardColours) {
     cards = cardColours;
 });
@@ -197,6 +210,18 @@ socket.on('blueScore', function(score) {
     document.getElementById("blueScore").textContent = blueScore;
 });
 
+socket.on('guessedCards', function(data) {
+  guessedCards = data;
+  colourGuessedCards(guessedCards);
+});
+
+function colourGuessedCards() {
+  for (i = 0; i < 25; i++) {
+    if (guessedCards[i] == true) {
+      buttonElements[i].style.background = getCardColour(cards[i]);
+    }
+  }
+}
 
 function handleCardClick(cardNumber) {
     if (cards[cardNumber] == 0) redScore--;
@@ -224,12 +249,15 @@ function handleCardClick(cardNumber) {
 
 function revealCard(guessedCard) {
   guessedCards.push(guessedCard);
-  socket.emit('guessedCards', guessedCards);
 }
 
 function clickButton(cardNumber) {
+  if (guessedCards[cardNumber]) return;
   console.log("clicked button " + cardNumber)
+  
   guessedCards[cardNumber] = true;
   handleCardClick(cardNumber);
   buttonElements[cardNumber].style.background = getCardColour(cards[cardNumber]);
+  console.log(guessedCards)
+  socket.emit('newGuessedCards', guessedCards);
 }

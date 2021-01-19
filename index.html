@@ -73,16 +73,26 @@
 
         /* Footer */
         .footer {
-            padding: 30px;
+            padding: 10px;
             text-align: center;
             background: #ddd;
             margin-bottom: 0;
             position: absolute;
             left: 0;
             bottom: 0;
-            height: 100px;
+            height: 50px;
             width: 100%;
             overflow: hidden;
+        }
+
+        .center {
+            margin: 0;
+            position: absolute;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            height: 1px;
+            background-color: #C1C1C2;
         }
 
         /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
@@ -197,6 +207,13 @@
             display:block;
         }
 
+        .endTurnButton {
+            background-color: #ddd;
+            width: 100px;
+            height: 70px;
+            color: black;
+        }
+
     </style>
 </head>
 
@@ -267,6 +284,9 @@
                     <button id="button24" onclick="clickButton(24)"></button>
                     <div class="row-divider"></div>
                 </div>
+                <div class="center">
+                    <button class="endTurnButton" id="endTurnButton" style="align-items: center;">END TURN</button>
+                </div>
         </div>
             
         <div class="column right">
@@ -296,9 +316,8 @@
 <script src="/static/buttonhandlers.js"></script>
 
 <div class="footer">
-    <div class="popup" onclick="showRules()">How to play:
-        <span class="popuptext" id="myPopup">Two teams compete by each having a "spymaster" give one-word clues that can point to multiple words on the board. The other players on the team attempt to guess their team's words while avoiding the words of the other team.</span>
-      </div>
+    Two teams compete by each having a "spymaster" give one-word clues that can point to multiple words on the board. The other players on the team attempt to guess their team's words while avoiding the words of the other team.</span>
+</div>
     
 
 </div>
