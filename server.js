@@ -47,6 +47,8 @@ var blueScore = 9;
 
 var guessedCards = [];
 
+var clueMessage = "";
+
 // add words
 
 function getWords() {
@@ -122,6 +124,9 @@ io.on('connection', function(socket) {
     guessedCards = data;
   });
 
+  socket.on('clueMessage', function(data) {
+    clueMessage = data;
+  });
 
 });
 
@@ -137,4 +142,6 @@ setInterval(function() {
     io.sockets.emit('blueScore', blueScore);
     
     io.sockets.emit('guessedCards', guessedCards);
+
+    io.sockets.emit('clueMessage', clueMessage);
 }, 1000 / 60);
