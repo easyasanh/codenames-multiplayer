@@ -48,6 +48,7 @@ var blueScore = 9;
 var guessedCards = [];
 
 var clueMessage = "";
+var teamTurn = "blueSpymaster";
 
 // add words
 
@@ -128,6 +129,10 @@ io.on('connection', function(socket) {
     clueMessage = data;
   });
 
+  socket.on('teamTurn', function(data) {
+    teamTurn = data;
+  });
+
 });
 
 setInterval(function() {
@@ -144,4 +149,6 @@ setInterval(function() {
     io.sockets.emit('guessedCards', guessedCards);
 
     io.sockets.emit('clueMessage', clueMessage);
+
+    io.sockets.emit('teamTurn', teamTurn);
 }, 1000 / 60);

@@ -67,6 +67,7 @@ function giveClue() {
   if (teamTurn === "blueSpymaster") teamTurn = "blueOperative";
   else if (teamTurn === "redSpymaster") teamTurn = "redOperative";
 
+  socket.emit('teamTurn', teamTurn);
   console.log("it is now the turn of: " + teamTurn)
   console
 }
@@ -233,6 +234,11 @@ socket.on('guessedCards', function(data) {
   colourGuessedCards(guessedCards);
 });
 
+socket.on('teamTurn', function(data) {
+  teamTurn = data;
+});
+
+
 function colourGuessedCards() {
   for (i = 0; i < 25; i++) {
     if (guessedCards[i] == true) {
@@ -243,16 +249,23 @@ function colourGuessedCards() {
 
 function handleCardClick(cardNumber) {
   if (cards[cardNumber] == 0) {
-    if (teamTurn === "blueOperative") teamTurn = "redSpymaster";
+    if (teamTurn === "blueOperative") {
+      console.log("blue chose a red card!")
+      teamTurn = "redSpymaster";
+    }
     redScore--;
   }
   if (cards[cardNumber] == 1) {
-    if (teamTurn === "redOperative") teamTurn = "blueSpymaster";
+    if (teamTurn === "redOperative") {
+      console.log("red chose a blue card!")
+      teamTurn = "blueSpymaster";
+    }
     blueScore--;
   }
   if (cards[cardNumber] == 2) {
     if (teamTurn === "blueOperative") teamTurn = "redSpymaster";
     if (teamTurn === "redOperative") teamTurn = "blueSpymaster";
+    console.log(teamTurn + " chose a grey card!")
   }
   if (cards[cardNumber] == 3) {
       console.log("GAME OVER, YOU CHOSE THE BLACK CARD!");
@@ -261,6 +274,9 @@ function handleCardClick(cardNumber) {
 
   socket.emit('redScore', redScore);
   socket.emit('blueScore', blueScore);
+  
+  
+  socket.emit('teamTurn', teamTurn);
 
   // game over
   if (redScore == 0) {
