@@ -1,8 +1,9 @@
 var socket = io();
 
-var role = 0; // role 0 for operative, role 1 for spymaster
+var role = "operative"; // role 0 for operative, role 1 for spymaster
 var team;
 var teamTurn = "blueSpymaster"; // blueSpymaster -> blueOperative -> redSpymaster -> redOperative
+var clue = "";
 
 // card elements
 var button0 = document.getElementById('button0');
@@ -53,22 +54,27 @@ function createCards(context) {
   }
 }
 
-// User joining game
+function giveClue() {
+  var word = document.getElementById('clueWord').value;
+  var number = document.getElementById('clueNumber').value;
 
-turnBanner.textContent = teamTurn;
+  
+  console.log(word);
+  turnBanner.textContent = teamTurn + " gave clue: " + word + ", " + number;
+}
 
 
 // Red team
 
 function clickRedOperative() {  // red operative
-  role = 0;
+  role = "operative";
   team = "red";
   var userName = document.getElementById('redName').value;
   socket.emit('redOperativeName', userName);
 }
 
 function clickRedSpymaster() {  // red spymaster
-  role = 1;
+  role = "spymaster";
   team = "red";
   var userName = document.getElementById('redName').value;
   socket.emit('redSpymasterName', userName);
@@ -77,14 +83,14 @@ function clickRedSpymaster() {  // red spymaster
 // Blue team
 
 function clickBlueOperative() {  // red operative
-  role = 0;
+  role = "operative";
   team = "blue"
   var userName = document.getElementById('blueName').value;
   socket.emit('blueOperativeName', userName);
 }
 
 function clickBlueSpymaster() {  // red spymaster
-  role = 1;
+  role = "spymaster";
   team = "blue";
   var userName = document.getElementById('blueName').value;
   socket.emit('blueSpymasterName', userName);
@@ -134,7 +140,6 @@ socket.on('blueSpymasters', function(spymasters) {
 
 socket.on('guessedCards', function(data) {
   guessedCards = data;
-  //console.log(guessedCards);
   colourGuessedCards();
 });
 
@@ -262,6 +267,5 @@ function clickButton(cardNumber) {
   guessedCards[cardNumber] = true;
   handleCardClick(cardNumber);
   buttonElements[cardNumber].style.background = getCardColour(cards[cardNumber]);
-  console.log(guessedCards)
   socket.emit('newGuessedCards', guessedCards);
 }

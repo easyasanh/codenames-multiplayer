@@ -262,7 +262,7 @@
                 <!-- <canvas id="canvas" width="1080" height="650"></canvas> -->
                 
                 <div class="row-divider"></div>
-                <div style="text-align: center;" id="turnBanner">RED'S TURN</div>
+                <div style="text-align: center;" id="turnBanner"></div>
                 <div class="row-divider"></div>
                 <div class="row-divider"></div>
                 <div class="row-divider"></div>
@@ -300,20 +300,20 @@
                 </div>
                     <div class="clueBar">            
                             <label for="fname"style="display: inline-block;">clue:</label>
-                            <input type="text" id="fname" name="fname" style="display: inline-block;" autocomplete="off">
-                            <select id=" clues" name="clues" style="display: inline-block;">
-                              <option value="clue1">1</option>
-                              <option value="clue2">2</option>
-                              <option value="clue3">3</option>
-                              <option value="clue4">4</option>
-                              <option value="clue5">5</option>
-                              <option value="clue6">6</option>
-                              <option value="clue7">7</option>
-                              <option value="clue8">8</option>
-                              <option value="clue9">9</option>
-                              <option value="clueInfinity">∞</option>
+                            <input type="text" id="clueWord" name="clueWord" style="display: inline-block;" autocomplete="off">
+                            <select id="clueNumber" name="clueNumber" style="display: inline-block;">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                              <option value="7">7</option>
+                              <option value="8">8</option>
+                              <option value="9">9</option>
+                              <option value="∞">∞</option>
                             </select>
-                            <input type="submit">
+                            <input type="submit" onclick="giveClue()">
                     </div>
         </div>
             
