@@ -31,6 +31,8 @@ var button22 = document.getElementById('button22');
 var button23 = document.getElementById('button23');
 var button24 = document.getElementById('button24');
 
+var turnBanner = document.getElementById('turnBanner');
+
 var buttonElements = [];
 buttonElements.push(button0, button1, button2, button3, button4, button5, button6, button7, button8, button9,
     button10, button11, button12, button13, button14, button15, button16, button17, button18, button19,
@@ -52,6 +54,8 @@ function createCards(context) {
 }
 
 // User joining game
+
+turnBanner.textContent = teamTurn;
 
 
 // Red team
