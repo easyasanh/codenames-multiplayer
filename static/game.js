@@ -3,6 +3,7 @@ var socket = io();
 var role = "spectator";
 var teamTurn = "blueSpymaster"; // blueSpymaster -> blueOperative -> redSpymaster -> redOperative
 var clue = "";
+var gameOver = false;
 
 // card elements
 var button0 = document.getElementById('button0');
@@ -54,22 +55,25 @@ function createCards(context) {
 }
 
 function giveClue() {
-  var wordField = document.getElementById('clueWord');
-  var numberField = document.getElementById('clueNumber');
-  var word = wordField.value;
-  var number = numberField.value;
+  console.log(role + " " + teamTurn);
+  if (role === teamTurn) {
+    var wordField = document.getElementById('clueWord');
+    var numberField = document.getElementById('clueNumber');
+    var word = wordField.value;
+    var number = numberField.value;
 
-  var clueMessage = teamTurn + " gave clue: " + word + ", " + number;
-  console.log(role + " gave clue: " + word + ', ' + number);
+    
+    if (teamTurn === "blueSpymaster") teamTurn = "blueOperative";
+    else if (teamTurn === "redSpymaster") teamTurn = "redOperative";
 
-  socket.emit('clueMessage', clueMessage);
+    var clueMessage = teamTurn + "'s turn to guess. Clue: " + word + ", " + number;
+    console.log(role + " gave clue: " + word + ', ' + number);
 
-  if (teamTurn === "blueSpymaster") teamTurn = "blueOperative";
-  else if (teamTurn === "redSpymaster") teamTurn = "redOperative";
+    socket.emit('clueMessage', clueMessage);
 
-  socket.emit('teamTurn', teamTurn);
-  console.log("it is now the turn of: " + teamTurn)
-  console
+    socket.emit('teamTurn', teamTurn);
+    console.log("it is now the turn of: " + teamTurn)
+  }
 }
 
 
@@ -107,8 +111,6 @@ function setButtonColours() {
     console.log("you're a spymaster");
   }
 }
-
-setCardColours();
 
 var redOperatives = new Set();
 var redSpymasters = new Set();
@@ -153,6 +155,11 @@ socket.on('clueMessage', function(data) {
   document.getElementById("turnBanner").textContent = clueMessage;
 });
 
+socket.on('gameOver', function(data) {
+  gameOver = data;
+  if (gameOver == true) setCardColours(cards);
+});
+
 if (redSpymasters.size > 0) {
   document.getElementById("redSpymasterName").textContent = redSpymasters;
 }
@@ -179,7 +186,9 @@ socket.on('state', function(players) {
   });
 
   socket.on('cards', function(cards) {
-    setCardColours(cards);
+    if (cards != null && role.includes("Spymaster")) {
+      setCardColours(cards);
+    }
   });
 
 
@@ -195,11 +204,9 @@ function getCardColour(type) {
 }
 
 function setCardColours(cards) {
-  if (cards != null && role.includes("Spymaster")) {
     for (i = 0; i < 24; i++) {
       buttonElements[i].style.background = getCardColour(cards[i]);
     }
-  }
 }
 
 
@@ -239,6 +246,7 @@ socket.on('teamTurn', function(data) {
 });
 
 
+
 function colourGuessedCards() {
   for (i = 0; i < 25; i++) {
     if (guessedCards[i] == true) {
@@ -252,6 +260,8 @@ function handleCardClick(cardNumber) {
     if (teamTurn === "blueOperative") {
       console.log("blue chose a red card!")
       teamTurn = "redSpymaster";
+      var clueMessage = teamTurn + "'s turn";
+      socket.emit('clueMessage', clueMessage);
     }
     redScore--;
   }
@@ -259,6 +269,8 @@ function handleCardClick(cardNumber) {
     if (teamTurn === "redOperative") {
       console.log("red chose a blue card!")
       teamTurn = "blueSpymaster";
+      var clueMessage = teamTurn + "'s turn";
+      socket.emit('clueMessage', clueMessage);
     }
     blueScore--;
   }
@@ -266,10 +278,15 @@ function handleCardClick(cardNumber) {
     if (teamTurn === "blueOperative") teamTurn = "redSpymaster";
     if (teamTurn === "redOperative") teamTurn = "blueSpymaster";
     console.log(teamTurn + " chose a grey card!")
+    var clueMessage = teamTurn + "'s turn";
+    socket.emit('clueMessage', clueMessage);
   }
   if (cards[cardNumber] == 3) {
       console.log("GAME OVER, YOU CHOSE THE BLACK CARD!");
-      document.getElementById("resultBanner").textContent = "GAME OVER, YOU CHOSE THE BLACK CARD!";
+      var clueMessage = "GAME OVER! " + teamTurn + " CHOSE THE BLACK CARD!";
+      socket.emit('clueMessage', clueMessage);
+      gameOver = true;
+      socket.emit('gameOver', gameOver);
   }
 
   socket.emit('redScore', redScore);
@@ -278,14 +295,24 @@ function handleCardClick(cardNumber) {
   
   socket.emit('teamTurn', teamTurn);
 
+
+
   // game over
   if (redScore == 0) {
       console.log("GAME OVER, RED WINS!");
       document.getElementById("resultBanner").textContent = "GAME OVER, RED WINS!";
+      var clueMessage = "GAME OVER, RED WINS!";
+      socket.emit('clueMessage', clueMessage);
+      gameOver = true;
+      socket.emit('gameOver', gameOver);
   }
   else if (blueScore == 0) {
       console.log("GAME OVER, BLUE WINS!");
       document.getElementById("resultBanner").textContent = "GAME OVER, BLUE WINS!";
+      var clueMessage = "GAME OVER, BLUE WINS!";
+      socket.emit('clueMessage', clueMessage);
+      gameOver = true;
+      socket.emit('gameOver', gameOver);
   }
 }
 
@@ -299,6 +326,7 @@ function clickButton(cardNumber) {
   console.log(role + " clicked button " + cardNumber + " on turn " + teamTurn)
   if (role !== teamTurn) return;
   if (guessedCards[cardNumber]) return;
+  if (gameOver) return;
   
   guessedCards[cardNumber] = true;
   handleCardClick(cardNumber);

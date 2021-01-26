@@ -50,6 +50,8 @@ var guessedCards = [];
 var clueMessage = "";
 var teamTurn = "blueSpymaster";
 
+var gameOver;
+
 // add words
 
 function getWords() {
@@ -133,6 +135,10 @@ io.on('connection', function(socket) {
     teamTurn = data;
   });
 
+  socket.on('gameOver', function(data) {
+    gameOver = data;
+  });
+
 });
 
 setInterval(function() {
@@ -151,4 +157,6 @@ setInterval(function() {
     io.sockets.emit('clueMessage', clueMessage);
 
     io.sockets.emit('teamTurn', teamTurn);
+
+    io.sockets.emit('gameOver', gameOver);
 }, 1000 / 60);
