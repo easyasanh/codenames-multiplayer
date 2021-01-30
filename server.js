@@ -50,7 +50,18 @@ var guessedCards = [];
 var clueMessage = "";
 var teamTurn = "blueSpymaster";
 
-var gameOver;
+var gameOver = false;
+var imageNames = [];
+
+setImagenames();
+
+function setImagenames() {
+  for (i = 0; i < 100; i++) {
+    imageNames.push("url(/static/images/thispersondoesnotexist/image" + i + ".jpg)");
+  }
+  console.log(imageNames[2]);
+  imageNames = imageNames.sort(() => Math.random() - Math.random()).slice(0, 25)
+}
 
 // add words
 
@@ -62,6 +73,7 @@ function getWords() {
   var words = str.split(",");
   return words
 }
+
 
 function generateCardColours() {
   var cards = [0, 0, 0, 0, 0, 0, 0, 0,  // red
@@ -143,6 +155,9 @@ io.on('connection', function(socket) {
 
 setInterval(function() {
     io.sockets.emit('state', players);
+
+    
+    io.sockets.emit('imageNames', imageNames);
 
     io.sockets.emit('redOperatives', Array.from(redOperatives).join(', '));
     io.sockets.emit('redSpymasters', Array.from(redSpymasters).join(', '));

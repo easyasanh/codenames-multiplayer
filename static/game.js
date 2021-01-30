@@ -45,6 +45,16 @@ function showRules() {
   popup.classList.toggle("show");
 }
 
+
+function setCardBackgrounds() {
+  for (i = 0; i < 25; i++) {
+    buttonElements[i].style.backgroundImage = imageNames[i];
+    buttonElements[i].style.backgroundSize = "120px 120px";
+    buttonElements[i].style.backgroundRepeat = "no-repeat";
+    buttonElements[i].style.backgroundPosition = "center";
+  }
+}
+
 function createCards(context) {
   for (i = 50; i < 1050; i+=200) {
     for (j = 0; j < 650; j+=130) {    
@@ -72,44 +82,58 @@ function giveClue() {
     socket.emit('clueMessage', clueMessage);
 
     socket.emit('teamTurn', teamTurn);
-    console.log("it is now the turn of: " + teamTurn)
   }
 }
 
-
+var clueBar = document.getElementById("clueBar");
 // Red team
 
 function clickRedOperative() {  // red operative
+  setCardBackgrounds();
   role = "redOperative";
-  var userName = document.getElementById('redName').value;
+  var userName = document.getElementById('userName').value;
+  clueBar.style.visibility = "hidden";
+  clearCardColours();
   socket.emit('redOperativeName', userName);
 }
 
 function clickRedSpymaster() {  // red spymaster
+  setCardBackgrounds();
   role = "redSpymaster";
-  var userName = document.getElementById('redName').value;
+  var userName = document.getElementById('userName').value;
+  clueBar.style.visibility = "visible";
   socket.emit('redSpymasterName', userName);
+  
+  setCardBackgrounds();
 }
 
 // Blue team
 
 function clickBlueOperative() {  // red operative
+  setCardBackgrounds();
   role = "blueOperative";
-  var userName = document.getElementById('blueName').value;
+  var userName = document.getElementById('userName').value;
+  clueBar.style.visibility = "hidden";
+  clearCardColours();
   socket.emit('blueOperativeName', userName);
 }
 
 function clickBlueSpymaster() {  // red spymaster
+  setCardBackgrounds();
   role = "blueSpymaster";
-  var userName = document.getElementById('blueName').value;
+  var userName = document.getElementById('userName').value;
+  clueBar.style.visibility = "visible";
   socket.emit('blueSpymasterName', userName);
+  
+  setCardBackgrounds();
 }
 
-function setButtonColours() {
-  if (role == 1) {
-    //document.getElementById("button7").style.background = "#A8201A";
-    console.log("you're a spymaster");
-  }
+function openForm() {
+  document.getElementById("formContainer").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
 }
 
 var redOperatives = new Set();
@@ -122,8 +146,13 @@ var blueSpymasters = new Set();
 // canvas.height = 650;
 //var context = canvas.getContext('2d');
 
-
 var guessedCards = [];
+var imageNames;
+
+socket.on('imageNames', function(data) {
+  imageNames = data;
+  setCardBackgrounds();
+});
 
 socket.on('redOperatives', function(operatives) {
   redOperatives = operatives;
@@ -157,7 +186,7 @@ socket.on('clueMessage', function(data) {
 
 socket.on('gameOver', function(data) {
   gameOver = data;
-  if (gameOver == true) setCardColours(cards);
+  if (gameOver) setCardColours(cards);
 });
 
 if (redSpymasters.size > 0) {
@@ -182,7 +211,7 @@ for (i = 0; i < 25; i++) {
 
 socket.on('state', function(players) {
   socket.on('words', function(words) {
-    addWords(words)
+    //addWords(words)
   });
 
   socket.on('cards', function(cards) {
@@ -199,14 +228,20 @@ socket.on('state', function(players) {
 function getCardColour(type) {
   if (type == 0) return "#A8201A";  // red
   if (type == 1) return "#357DED";  // blue
-  if (type == 2) return "#555";  // neutral
+  if (type == 2) return "#888";  // neutral
   if (type == 3) return "#23231A";  // black
 }
 
 function setCardColours(cards) {
-    for (i = 0; i < 24; i++) {
-      buttonElements[i].style.background = getCardColour(cards[i]);
-    }
+  for (i = 0; i < 25; i++) {
+    buttonElements[i].style.border = "5px solid " + getCardColour(cards[i]);
+  }
+}
+
+function clearCardColours() {
+  for (i = 0; i < 25; i++) {
+    buttonElements[i].style.border = "5px solid #C1C1C2";
+  }
 }
 
 
@@ -250,7 +285,7 @@ socket.on('teamTurn', function(data) {
 function colourGuessedCards() {
   for (i = 0; i < 25; i++) {
     if (guessedCards[i] == true) {
-      buttonElements[i].style.background = getCardColour(cards[i]);
+      buttonElements[i].style.border = "5px solid " + getCardColour(cards[i]);
     }
   }
 }
@@ -286,7 +321,6 @@ function handleCardClick(cardNumber) {
       var clueMessage = "GAME OVER! " + teamTurn + " CHOSE THE BLACK CARD!";
       socket.emit('clueMessage', clueMessage);
       gameOver = true;
-      socket.emit('gameOver', gameOver);
   }
 
   socket.emit('redScore', redScore);
@@ -300,7 +334,6 @@ function handleCardClick(cardNumber) {
   // game over
   if (redScore == 0) {
       console.log("GAME OVER, RED WINS!");
-      document.getElementById("resultBanner").textContent = "GAME OVER, RED WINS!";
       var clueMessage = "GAME OVER, RED WINS!";
       socket.emit('clueMessage', clueMessage);
       gameOver = true;
@@ -308,12 +341,12 @@ function handleCardClick(cardNumber) {
   }
   else if (blueScore == 0) {
       console.log("GAME OVER, BLUE WINS!");
-      document.getElementById("resultBanner").textContent = "GAME OVER, BLUE WINS!";
       var clueMessage = "GAME OVER, BLUE WINS!";
       socket.emit('clueMessage', clueMessage);
       gameOver = true;
-      socket.emit('gameOver', gameOver);
   }
+  
+  socket.emit('gameOver', gameOver);
 }
 
 
@@ -330,6 +363,6 @@ function clickButton(cardNumber) {
   
   guessedCards[cardNumber] = true;
   handleCardClick(cardNumber);
-  buttonElements[cardNumber].style.background = getCardColour(cards[cardNumber]);
+  buttonElements[cardNumber].style.border = "5px solid " + getCardColour(cards[cardNumber]);
   socket.emit('newGuessedCards', guessedCards);
 }
