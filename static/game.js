@@ -40,6 +40,8 @@ var button24 = document.getElementById('button24');
 
 var turnBanner = document.getElementById('turnBanner');
 
+var endTurnButton = document.getElementById('endTurnButton')
+
 var buttonElements = [];
 buttonElements.push(button0, button1, button2, button3, button4, button5, button6, button7, button8, button9,
   button10, button11, button12, button13, button14, button15, button16, button17, button18, button19,
@@ -49,6 +51,16 @@ buttonElements.push(button0, button1, button2, button3, button4, button5, button
 function showRules() {
   var popup = document.getElementById("myPopup");
   popup.classList.toggle("show");
+}
+
+function endTurn() {
+  if (teamTurn !== role) return
+  endTurnButton.style.visibility = "hidden";
+  if (teamTurn === "blueOperative") teamTurn = "redSpymaster";
+  else if (teamTurn === "redOperative") teamTurn = "blueSpymaster";
+  socket.emit('teamTurn', teamTurn);
+  var clueMessage = teamTurn + "'s turn";
+  socket.emit('clueMessage', clueMessage);
 }
 
 
@@ -156,6 +168,11 @@ var blueSpymasters = new Set();
 var guessedCards = [];
 var imageNames;
 
+
+for (i = 0; i < 25; i++) {
+  guessedCards[i] = false;
+}
+
 socket.on('imageNames', function (data) {
   imageNames = data;
   setCardBackgrounds();
@@ -184,6 +201,7 @@ socket.on('blueSpymasters', function (spymasters) {
 socket.on('guessedCards', function (data) {
   guessedCards = data;
   colourGuessedCards();
+  console.log(guessedCards);
 });
 
 socket.on('clueMessage', function (data) {
@@ -212,9 +230,6 @@ if (blueOperatives.size > 0) {
 
 
 
-for (i = 0; i < 25; i++) {
-  guessedCards[i] = false;
-}
 
 socket.on('state', function (players) {
   socket.on('words', function (words) {
@@ -254,7 +269,7 @@ function setCardColours(cards) {
 
 function clearCardColours() {
   for (i = 0; i < 25; i++) {
-    buttonElements[i].style.background = "#888";
+    buttonElements[i].style.background = "white";
   }
 }
 
@@ -291,19 +306,18 @@ socket.on('blueScore', function (score) {
   document.getElementById("blueScore").textContent = blueScore;
 });
 
-socket.on('guessedCards', function (data) {
-  guessedCards = data;
-  colourGuessedCards(guessedCards);
-});
-
 socket.on('teamTurn', function (data) {
   teamTurn = data;
-  if (role.includes('Spymaster') && teamTurn == role) {
-    clueBar.style.visibility = "visible";
+  if (role.includes('Spymaster')) {
+    if (teamTurn == role) clueBar.style.visibility = "visible";
+    else clueBar.style.visibility = "hidden";
   }
   else {
-    clueBar.style.visibility = "hidden";
+    if (teamTurn == role) endTurnButton.style.visibility = "visible";
+    else endTurnButton.style.visibility = "hidden";
   }
+
+  
 
 });
 
@@ -312,7 +326,13 @@ socket.on('teamTurn', function (data) {
 function colourGuessedCards() {
   for (i = 0; i < 25; i++) {
     if (guessedCards[i] == true) {
-      buttonElements[i].style.border = "5px solid " + getCardColour(cards[i]);
+      console.log('colouring card ' + i + getCardColour(cards[i]))
+      buttonElements[i].style.opacity = "1"
+      buttonElements[i].style.background = getCardColour(cards[i]);
+      buttonElements[i].style.backgroundImage = imageNames[i];
+      buttonElements[i].style.backgroundSize = "120px 120px";
+      buttonElements[i].style.backgroundRepeat = "no-repeat";
+      buttonElements[i].style.backgroundPosition = "center";
     }
   }
 }
@@ -389,7 +409,8 @@ function clickButton(cardNumber) {
   if (gameOver) return;
 
   guessedCards[cardNumber] = true;
-  handleCardClick(cardNumber);
-  buttonElements[cardNumber].style.border = "5px solid " + getCardColour(cards[cardNumber]);
   socket.emit('newGuessedCards', guessedCards);
+  handleCardClick(cardNumber);
+  buttonElements[cardNumber].style.background = getCardColour(cards[cardNumber]);
+  setCardBackgrounds();
 }
