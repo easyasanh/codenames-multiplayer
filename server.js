@@ -174,4 +174,4 @@ setInterval(function() {
     io.sockets.emit('teamTurn', teamTurn);
 
     io.sockets.emit('gameOver', gameOver);
-}, 1000 / 60);
+}, 2000);

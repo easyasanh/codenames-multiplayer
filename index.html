@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 
-    <script src="/socket.io/socket.io.js"></script> 
+<script src="/socket.io/socket.io.js"></script>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
@@ -67,8 +68,8 @@
         }
 
         canvas {
-        width: 1080px;
-        height: 650px;
+            width: 1080px;
+            height: 650px;
         }
 
         /* Footer */
@@ -184,7 +185,7 @@
             color: #ddd;
             transition-duration: 0.6s;
             border-radius: 12px;
-            
+
             width: 19%
         }
 
@@ -206,7 +207,7 @@
             margin-left: auto;
             margin-right: auto;
             margin: auto;
-            display:block;
+            display: block;
         }
 
         .endTurnButton {
@@ -230,187 +231,202 @@
             font-size: 300;
         }
 
-        {box-sizing: border-box;}
+            {
+            box-sizing: border-box;
+        }
 
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-  background-color: #555;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 280px;
-}
+        /* Button used to open the contact form - fixed at the bottom of the page */
+        .open-button {
+            background-color: #555;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.8;
+            position: fixed;
+            bottom: 23px;
+            right: 28px;
+            width: 280px;
+        }
 
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-}
+        /* The popup form - hidden by default */
+        .form-popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 15px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+        }
 
-/* Add styles to the form container */
-.form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
-}
+        /* Add styles to the form container */
+        .form-container {
+            max-width: 300px;
+            padding: 10px;
+            background-color: white;
+        }
 
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
+        /* Full-width input fields */
+        .form-container input[type=text],
+        .form-container input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            border: none;
+            background: #f1f1f1;
+        }
 
-/* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
+        /* When the inputs get focus, do something */
+        .form-container input[type=text]:focus,
+        .form-container input[type=password]:focus {
+            background-color: #ddd;
+            outline: none;
+        }
 
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
-}
+        /* Set a style for the submit/login button */
+        .form-container .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
 
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+            background-color: red;
+        }
 
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
-
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover,
+        .open-button:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 
-    <div class="header">
-        <img src="static/images/codenames_logo.png" id="codenames_logo">
-    </div>
+<div class="header">
+    <img src="static/images/codenames_logo.png" id="codenames_logo">
+</div>
 
 
-    <div class="navbar">
-        <a href='#'>reset teams</a>
-        <a href="#">reset words</a>
-        <a href="#" class="right">reset game</a>
-    </div>
+<div class="navbar">
+    <a href='#'>reset teams</a>
+    <a href="#">reset words</a>
+    <a href="#" class="right">reset game</a>
+</div>
 
-    <div class="row">
-        <div class="column left">
-            <div id="redScore" style="font-size: 30px;">8</div>
-            <h2>Red Team</h2>
-            <h5>OPERATIVES</h5>
-            <p id="redOperativeName"> </p>
-            <h5>SPYMASTERS</h5>
-            <p id="redSpymasterName"> </p>
+<div class="row">
+    <div class="column left">
+        <div id="redScore" style="font-size: 30px;">8</div>
+        <h2>Red Team</h2>
+        <h5>OPERATIVES</h5>
+        <p id="redOperativeName"> </p>
+        <h5>SPYMASTERS</h5>
+        <p id="redSpymasterName"> </p>
 
 
-            <div class="form-container" id="formContainer">
-                <h2>Join</h2>
-            
-                <input type="text" placeholder="enter name" autocomplete="off" name="name" id="userName" required>
+        <div class="form-container" id="formContainer">
+            <h2>Join</h2>
 
-                <div class="btn-group">
-                    <button id="redOperativeButton" onclick="clickRedOperative()" style="background-color: #A8201A; color: #C1C1C2;">operative</button>
-                    <button id="redSpymasterButton" onclick="clickRedSpymaster()" style="background-color: #A8201A; color: #C1C1C2;">spymaster</button>
-                </div>
-                <div class="btn-group">
-                    <button id="blueOperativeButton" onclick="clickBlueOperative()" style="background-color: #357DED; color: black;">operative</button>
-                    <button id="blueSpymasterButton" onclick="clickBlueSpymaster()"  style="background-color: #357DED; color: black;">spymaster</button>
-                </div>
+            <input type="text" placeholder="enter name" autocomplete="off" name="name" id="redUserName" required>
+
+            <div class="btn-group">
+                <button id="redOperativeButton" onclick="clickRedOperative()"
+                    style="background-color: #A8201A; color: #C1C1C2;">operative</button>
+                <button id="redSpymasterButton" onclick="clickRedSpymaster()"
+                    style="background-color: #A8201A; color: #C1C1C2;">spymaster</button>
             </div>
         </div>
-        <div class="column middle" width="1000" height="650">
-                <!-- <canvas id="canvas" width="1080" height="650"></canvas> -->
-                
-                <div class="row-divider"></div>
-                <div style="text-align: center;" id="turnBanner"></div>
-                <div class="row-divider"></div>
-                <div class="row-divider"></div>
-                <div class="row-divider"></div>
-                <div class="cards">
-                    <button id="button0" onclick="clickButton(0)" style="background-image: static/images/thispersondoesnotexist/image.png";></button>
-                    <button id="button1" onclick="clickButton(1)"></button>
-                    <button id="button2" onclick="clickButton(2)"></button>
-                    <button id="button3" onclick="clickButton(3)"></button>
-                    <button id="button4" onclick="clickButton(4)"></button>
-                    <div class="row-divider"></div>
-                    <button id="button5" onclick="clickButton(5)"></button>
-                    <button id="button6" onclick="clickButton(6)"></button>
-                    <button id="button7" onclick="clickButton(7)"></button>
-                    <button id="button8" onclick="clickButton(8)"></button>
-                    <button id="button9" onclick="clickButton(9)"></button>
-                    <div class="row-divider"></div>
-                    <button id="button10" onclick="clickButton(10)"></button>
-                    <button id="button11" onclick="clickButton(11)"></button>
-                    <button id="button12" onclick="clickButton(12)"></button>
-                    <button id="button13" onclick="clickButton(13)"></button>
-                    <button id="button14" onclick="clickButton(14)"></button>
-                    <div class="row-divider"></div>
-                    <button id="button15" onclick="clickButton(15)"></button>
-                    <button id="button16" onclick="clickButton(16)"></button>
-                    <button id="button17" onclick="clickButton(17)"></button>
-                    <button id="button18" onclick="clickButton(18)"></button>
-                    <button id="button19" onclick="clickButton(19)"></button>
-                    <div class="row-divider"></div>
-                    <button id="button20" onclick="clickButton(20)"></button>
-                    <button id="button21" onclick="clickButton(21)"></button>
-                    <button id="button22" onclick="clickButton(22)"></button>
-                    <button id="button23" onclick="clickButton(23)"></button>
-                    <button id="button24" onclick="clickButton(24)"></button>
-                    <div class="row-divider"></div>
-                </div>
-                    <div class="clueBar" id="clueBar" style="visibility: hidden;">            
-                            <label for="fname"style="display: inline-block;">clue:</label>
-                            <input type="text" id="clueWord" name="clueWord" style="display: inline-block;" autocomplete="off">
-                            <select id="clueNumber" name="clueNumber" style="display: inline-block;">
-                              <option value="1">1</option>
-                              <option value="2">2</option>
-                              <option value="3">3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
-                              <option value="6">6</option>
-                              <option value="7">7</option>
-                              <option value="8">8</option>
-                              <option value="9">9</option>
-                              <option value="∞">∞</option>
-                            </select>
-                            <input type="submit" onclick="giveClue()">
-                    </div>
+    </div>
+    <div class="column middle" width="1000" height="650">
+        <!-- <canvas id="canvas" width="1080" height="650"></canvas> -->
+
+        <div class="row-divider"></div>
+        <div style="text-align: center;" id="turnBanner"></div>
+        <div class="row-divider"></div>
+        <div class="row-divider"></div>
+        <div class="row-divider"></div>
+        <div class="cards">
+            <button id="button0" onclick="clickButton(0)"
+                style="background-image: static/images/thispersondoesnotexist/image.png" ;></button>
+            <button id="button1" onclick="clickButton(1)"></button>
+            <button id="button2" onclick="clickButton(2)"></button>
+            <button id="button3" onclick="clickButton(3)"></button>
+            <button id="button4" onclick="clickButton(4)"></button>
+            <div class="row-divider"></div>
+            <button id="button5" onclick="clickButton(5)"></button>
+            <button id="button6" onclick="clickButton(6)"></button>
+            <button id="button7" onclick="clickButton(7)"></button>
+            <button id="button8" onclick="clickButton(8)"></button>
+            <button id="button9" onclick="clickButton(9)"></button>
+            <div class="row-divider"></div>
+            <button id="button10" onclick="clickButton(10)"></button>
+            <button id="button11" onclick="clickButton(11)"></button>
+            <button id="button12" onclick="clickButton(12)"></button>
+            <button id="button13" onclick="clickButton(13)"></button>
+            <button id="button14" onclick="clickButton(14)"></button>
+            <div class="row-divider"></div>
+            <button id="button15" onclick="clickButton(15)"></button>
+            <button id="button16" onclick="clickButton(16)"></button>
+            <button id="button17" onclick="clickButton(17)"></button>
+            <button id="button18" onclick="clickButton(18)"></button>
+            <button id="button19" onclick="clickButton(19)"></button>
+            <div class="row-divider"></div>
+            <button id="button20" onclick="clickButton(20)"></button>
+            <button id="button21" onclick="clickButton(21)"></button>
+            <button id="button22" onclick="clickButton(22)"></button>
+            <button id="button23" onclick="clickButton(23)"></button>
+            <button id="button24" onclick="clickButton(24)"></button>
+            <div class="row-divider"></div>
         </div>
-            
-        <div class="column right">
-            <div id="blueScore" style="font-size: 30px;">9</div>
-            <h2>Blue Team</h2>
-            <h5></h5>
+        <div class="clueBar" id="clueBar" style="visibility: hidden;">
+            <label for="fname" style="display: inline-block;">clue:</label>
+            <input type="text" id="clueWord" name="clueWord" style="display: inline-block;" autocomplete="off">
+            <select id="clueNumber" name="clueNumber" style="display: inline-block;">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="∞">∞</option>
+            </select>
+            <input type="submit" onclick="giveClue()">
+        </div>
+    </div>
 
-            <h5>OPERATIVES</h5>
-            <p id="blueOperativeName"> </p>
-            <h5>SPYMASTERS</h5>
-            <p id="blueSpymasterName"> </p>
+    <div class="column right">
+        <div id="blueScore" style="font-size: 30px;">9</div>
+        <h2>Blue Team</h2>
+        <h5></h5>
 
+        <h5>OPERATIVES</h5>
+        <p id="blueOperativeName"> </p>
+        <h5>SPYMASTERS</h5>
+        <p id="blueSpymasterName"> </p>
+
+        <div class="form-container" id="formContainer">
+            <h2>Join</h2>
+
+            <input type="text" placeholder="enter name" autocomplete="off" name="name" id="blueUserName" required>
+            <div class="btn-group">
+                <button id="blueOperativeButton" onclick="clickBlueOperative()"
+                    style="background-color: #357DED; color: black;">operative</button>
+                <button id="blueSpymasterButton" onclick="clickBlueSpymaster()"
+                    style="background-color: #357DED; color: black;">spymaster</button>
+            </div>
         </div>
 
     </div>
+
+</div>
 
 
 
@@ -419,7 +435,7 @@
 
 <script src="/static/game.js"></script>
 <script src="/static/buttonhandlers.js"></script>
-    
+
 
 </div>
 
