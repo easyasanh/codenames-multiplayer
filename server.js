@@ -56,8 +56,8 @@ var imageNames = [];
 setImagenames();
 
 function setImagenames() {
-  for (i = 0; i < 100; i++) {
-    imageNames.push("url(/static/images/thispersondoesnotexist/image" + i + ".jpg)");
+  for (i = 0; i < 2000; i++) {
+    imageNames.push("url(/static/images/mass/image" + i + ".jpg)");
   }
   imageNames = imageNames.sort(() => Math.random() - Math.random()).slice(0, 25)
 }
