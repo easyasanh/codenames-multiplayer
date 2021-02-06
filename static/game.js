@@ -1,5 +1,8 @@
 // TODO:
 // team name joining
+// more faces
+// count number of guesses
+// highlight
 
 var socket = io();
 
