@@ -48,7 +48,7 @@ var blueScore = 9;
 var guessedCards = [];
 
 var clueMessage = "";
-var teamTurn = "blueSpymaster";
+var teamTurn = "Blue Spymaster";
 
 var gameOver = false;
 var imageNames = [];
@@ -59,7 +59,6 @@ function setImagenames() {
   for (i = 0; i < 100; i++) {
     imageNames.push("url(/static/images/thispersondoesnotexist/image" + i + ".jpg)");
   }
-  console.log(imageNames[2]);
   imageNames = imageNames.sort(() => Math.random() - Math.random()).slice(0, 25)
 }
 

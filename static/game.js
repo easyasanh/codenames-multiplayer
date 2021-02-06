@@ -1,13 +1,10 @@
 // TODO:
-// end turn
-// investigate random clicks
-// investigate lag
-// fill card, not outline
+// team name joining
 
 var socket = io();
 
-var role = "spectator";
-var teamTurn = "blueSpymaster"; // blueSpymaster -> blueOperative -> redSpymaster -> redOperative
+var role = "Spectator";
+var teamTurn = "Blue Spymaster"; // blueSpymaster -> blueOperative -> redSpymaster -> redOperative
 var clue = "";
 var gameOver = false;
 
@@ -56,8 +53,8 @@ function showRules() {
 function endTurn() {
   if (teamTurn !== role) return
   endTurnButton.style.visibility = "hidden";
-  if (teamTurn === "blueOperative") teamTurn = "redSpymaster";
-  else if (teamTurn === "redOperative") teamTurn = "blueSpymaster";
+  if (teamTurn === "Blue Operative") teamTurn = "Red Spymaster";
+  else if (teamTurn === "Red Operative") teamTurn = "Blue Spymaster";
   socket.emit('teamTurn', teamTurn);
   var clueMessage = teamTurn + "'s turn";
   socket.emit('clueMessage', clueMessage);
@@ -92,8 +89,8 @@ function giveClue() {
     var number = numberField.value;
 
 
-    if (teamTurn === "blueSpymaster") teamTurn = "blueOperative";
-    else if (teamTurn === "redSpymaster") teamTurn = "redOperative";
+    if (teamTurn === "Blue Spymaster") teamTurn = "Blue Operative";
+    else if (teamTurn === "Red Spymaster") teamTurn = "Red Operative";
 
     var clueMessage = teamTurn + "'s turn to guess. Clue: " + word + ", " + number;
     console.log(role + " gave clue: " + word + ', ' + number);
@@ -109,7 +106,7 @@ var clueBar = document.getElementById("clueBar");
 
 function clickRedOperative() {  // red operative
   setCardBackgrounds();
-  role = "redOperative";
+  role = "Red Operative";
   var userName = document.getElementById('redUserName').value;
   //clueBar.style.visibility = "hidden";
   clearCardColours();
@@ -118,7 +115,7 @@ function clickRedOperative() {  // red operative
 
 function clickRedSpymaster() {  // red spymaster
   setCardBackgrounds();
-  role = "redSpymaster";
+  role = "Red Spymaster";
   var userName = document.getElementById('redUserName').value;
   //clueBar.style.visibility = "visible";
   socket.emit('redSpymasterName', userName);
@@ -130,7 +127,7 @@ function clickRedSpymaster() {  // red spymaster
 
 function clickBlueOperative() {  // red operative
   setCardBackgrounds();
-  role = "blueOperative";
+  role = "Blue Operative";
   var userName = document.getElementById('blueUserName').value;
   //clueBar.style.visibility = "hidden";
   clearCardColours();
@@ -139,7 +136,7 @@ function clickBlueOperative() {  // red operative
 
 function clickBlueSpymaster() {  // red spymaster
   setCardBackgrounds();
-  role = "blueSpymaster";
+  role = "Blue Spymaster";
   var userName = document.getElementById('blueUserName').value;
   //clueBar.style.visibility = "visible";
   socket.emit('blueSpymasterName', userName);
@@ -165,7 +162,7 @@ var blueSpymasters = new Set();
 // canvas.height = 650;
 //var context = canvas.getContext('2d');
 
-var guessedCards = [];
+var guessedCards = new Array(25);
 var imageNames;
 
 
@@ -201,7 +198,6 @@ socket.on('blueSpymasters', function (spymasters) {
 socket.on('guessedCards', function (data) {
   guessedCards = data;
   colourGuessedCards();
-  console.log(guessedCards);
 });
 
 socket.on('clueMessage', function (data) {
@@ -326,39 +322,40 @@ socket.on('teamTurn', function (data) {
 function colourGuessedCards() {
   for (i = 0; i < 25; i++) {
     if (guessedCards[i] == true) {
-      console.log('colouring card ' + i + getCardColour(cards[i]))
       buttonElements[i].style.opacity = "1"
       buttonElements[i].style.background = getCardColour(cards[i]);
       buttonElements[i].style.backgroundImage = imageNames[i];
       buttonElements[i].style.backgroundSize = "120px 120px";
       buttonElements[i].style.backgroundRepeat = "no-repeat";
       buttonElements[i].style.backgroundPosition = "center";
+      if (role.includes("Spymaster")) buttonElements[i].style.opacity = "0.4";
     }
+    if (role.includes("Spymaster")) buttonElements[i].style.color = "white";
   }
 }
 
 function handleCardClick(cardNumber) {
   if (cards[cardNumber] == 0) {
-    if (teamTurn === "blueOperative") {
+    if (teamTurn === "Blue Operative") {
       console.log("blue chose a red card!")
-      teamTurn = "redSpymaster";
+      teamTurn = "Red Spymaster";
       var clueMessage = teamTurn + "'s turn";
       socket.emit('clueMessage', clueMessage);
     }
     redScore--;
   }
   if (cards[cardNumber] == 1) {
-    if (teamTurn === "redOperative") {
+    if (teamTurn === "Red Operative") {
       console.log("red chose a blue card!")
-      teamTurn = "blueSpymaster";
+      teamTurn = "Blue Spymaster";
       var clueMessage = teamTurn + "'s turn";
       socket.emit('clueMessage', clueMessage);
     }
     blueScore--;
   }
   if (cards[cardNumber] == 2) {
-    if (teamTurn === "blueOperative") teamTurn = "redSpymaster";
-    if (teamTurn === "redOperative") teamTurn = "blueSpymaster";
+    if (teamTurn === "Blue Operative") teamTurn = "Red Spymaster";
+    if (teamTurn === "Red Operative") teamTurn = "Blue Spymaster";
     console.log(teamTurn + " chose a grey card!")
     var clueMessage = teamTurn + "'s turn";
     socket.emit('clueMessage', clueMessage);

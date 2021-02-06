@@ -182,7 +182,7 @@
             width: 180px;
             padding: 10px 24px;
             font-family: Verdana;
-            color: #ddd;
+            color: black;
             transition-duration: 0.6s;
             border-radius: 12px;
 
@@ -215,7 +215,12 @@
             width: 200px;
             height: 50px;
             color: black;
-            display: inline-block;
+            margin: 0;
+            position: absolute;
+            top: 90%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
         }
 
         .clueField {
@@ -225,6 +230,11 @@
 
         .clueBar {
             width: 50%;
+            position: absolute;
+            top: 90%;
+            left: 65%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
         }
 
         .clues {
@@ -233,7 +243,6 @@
 
         .faceButton {
             text-align: left;
-            opacity: 0.7;
         }
 
         /* Button used to open the contact form - fixed at the bottom of the page */
@@ -331,8 +340,6 @@
 
 
         <div class="form-container" id="formContainer">
-            <h2>Join</h2>
-
             <input type="text" placeholder="enter name" autocomplete="off" name="name" id="redUserName" required>
 
             <div class="btn-group">
@@ -387,6 +394,7 @@
             <label for="fname" style="display: inline-block;">clue:</label>
             <input type="text" id="clueWord" name="clueWord" style="display: inline-block;" autocomplete="off">
             <select id="clueNumber" name="clueNumber" style="display: inline-block;">
+                <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -417,8 +425,6 @@
         <p id="blueSpymasterName"> </p>
 
         <div class="form-container" id="formContainer">
-            <h2>Join</h2>
-
             <input type="text" placeholder="enter name" autocomplete="off" name="name" id="blueUserName" required>
             <div class="btn-group">
                 <button id="blueOperativeButton" onclick="clickBlueOperative()"
