@@ -3,6 +3,7 @@
 // more faces
 // count number of guesses
 // highlight
+// log
 
 var socket = io();
 
